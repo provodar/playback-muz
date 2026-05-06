@@ -144,6 +144,23 @@
             #hero-img-collage { flex: 0.8; flex-direction: column; }
         }
     </style>
+    <!-- Meta Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '998161555943837');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=998161555943837&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
 </head>
 <body>
 
@@ -299,8 +316,19 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ chat_id: telegramConfig.telegramChatId, text: text })
             }).then(() => {
+                // Приховуємо форму, показуємо подяку
                 document.getElementById('tg-form').style.display = 'none';
                 document.getElementById('form-status').style.display = 'block';
+
+                // --- ТРИГЕР ПОДІЇ ЛІД ДЛЯ FACEBOOK PIXEL ---
+                if (typeof fbq === 'function') {
+                    fbq('track', 'Lead');
+                }
+                
+                // --- ТРИГЕР ПОДІЇ ЛІД ДЛЯ GOOGLE ANALYTICS (якщо юзаєш) ---
+                if (typeof gtag === 'function') {
+                    gtag('event', 'generate_lead');
+                }
             });
         });
     </script>
