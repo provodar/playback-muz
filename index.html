@@ -125,8 +125,9 @@
             align-self: flex-start;
         }
 
-        form { display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 400px; }
-        input { padding: 18px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1.1rem; font-family: inherit; }
+        form { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 400px; }
+        input, textarea { padding: 16px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1.1rem; font-family: inherit; resize: none; }
+        .form-status { display: none; padding: 15px; border-radius: 12px; background: #c6f6d5; color: #22543d; font-weight: 600; margin-top: 20px; }
 
         @media (max-width: 900px) {
             .content-wrapper { flex-direction: column; height: 90vh; margin-right: 0; }
@@ -139,7 +140,6 @@
             #hero-img-collage { flex: 0.8; flex-direction: column; }
         }
     </style>
-    <!-- Meta Pixel Code -->
     <script>
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -155,8 +155,7 @@
     <noscript><img height="1" width="1" style="display:none"
         src="https://www.facebook.com/tr?id=998161555943837&ev=PageView&noscript=1"
     /></noscript>
-    <!-- End Meta Pixel Code -->
-</head>
+    </head>
 <body>
 
     <div class="snap-container" id="main-container">
@@ -227,7 +226,6 @@
             </button>
         </section>
 
-        <!-- НОВИЙ ЕКРАН ПЕРЕД ОРГМОМЕНТАМИ -->
         <section class="screen" id="scr-5">
             <div class="content-wrapper">
                 <div class="text-side">
@@ -253,8 +251,10 @@
                         <input type="text" id="input-name" required>
                         <input type="text" id="input-contact" required>
                         <input type="text" id="input-instrument" required>
+                        <textarea id="input-about" rows="3" required></textarea>
                         <button type="submit" class="btn" id="submit-btn" style="align-self: stretch;"></button>
                     </form>
+                    <div class="form-status" id="form-status">Заявка відправлена!</div>
                 </div>
                 <div class="image-side" id="form-img"></div>
             </div>
@@ -299,7 +299,6 @@
                     document.getElementById('benefits-items').appendChild(li);
                 });
 
-                // Завантаження даних для нового екрану
                 document.getElementById('stage-title').textContent = data.stage.title;
                 document.getElementById('stage-desc').textContent = data.stage.description;
                 document.getElementById('stage-img').style.backgroundImage = `url('${data.stage.image}')`;
@@ -314,10 +313,10 @@
                 document.getElementById('input-name').placeholder = data.form.namePlaceholder;
                 document.getElementById('input-contact').placeholder = data.form.contactPlaceholder;
                 document.getElementById('input-instrument').placeholder = data.form.instrumentPlaceholder;
+                document.getElementById('input-about').placeholder = data.form.aboutPlaceholder || 'Кілька слів про себе';
                 document.getElementById('submit-btn').textContent = data.form.submitButton;
             });
 
-        // НОВА ЛОГІКА ВІДПРАВКИ ФОРМИ НА ВЕБХУК ЗРУБА
         document.getElementById('tg-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -332,9 +331,10 @@
                 name: document.getElementById('input-name').value,
                 phone: contactValue, 
                 telegram: contactValue,
+                about: document.getElementById('input-about').value,
                 interest: document.getElementById('input-instrument').value,
                 sourceUrl: window.location.href,
-                referrer: document.referrer || 'Прямий заход',
+                referrer: document.referrer || 'Прямий захід',
                 screenRes: `${window.screen.width}x${window.screen.height}`,
                 lang: navigator.language || 'Невизначено',
                 fbclid: new URLSearchParams(window.location.search).get('fbclid')
@@ -351,7 +351,8 @@
                     if (typeof fbq === 'function') {
                         fbq('track', 'Lead');
                     }
-                    window.location.href = 'success.html';
+                    document.getElementById('tg-form').style.display = 'none';
+                    document.getElementById('form-status').style.display = 'block';
                 } else {
                     alert('Помилка відправки. Будь ласка, спробуйте ще раз.');
                     btn.innerText = originalText;
