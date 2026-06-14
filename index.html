@@ -130,15 +130,61 @@
         .form-status { display: none; padding: 15px; border-radius: 12px; background: #c6f6d5; color: #22543d; font-weight: 600; margin-top: 20px; }
 
         @media (max-width: 900px) {
-            .content-wrapper { flex-direction: column; height: 90vh; margin-right: 0; }
-            .text-side { padding: 30px; }
-            h1 { font-size: 2.2rem; }
-            .nav-arrow { width: 50px; height: 50px; right: 20px; }
-            .nav-arrow svg { width: 30px; height: 30px; }
-            .arrow-up { top: 20px; }
-            .arrow-down { bottom: 20px; }
-            #hero-img-collage { flex: 0.8; flex-direction: column; }
+        .snap-container {
+            scroll-snap-type: none;
+            height: auto;
         }
+        
+        .screen {
+            height: auto;
+            min-height: 100vh;
+            padding: 60px 20px; /* Запас для навігаційних стрілок */
+        }
+
+        .content-wrapper { 
+            flex-direction: column; 
+            height: auto; 
+            margin-right: 0; 
+        }
+        
+        /* Контентний розподіл: спочатку текст, потім фото */
+        .text-side { 
+            order: 1;
+            padding: 30px 20px; 
+        }
+        
+        .image-side, #hero-img-collage { 
+            order: 2;
+            display: flex;
+            height: 250px; /* Оптимальна висота для фото на мобільних */
+            width: 100%;
+        }
+
+        /* ХОВАЄМО фото ТІЛЬКИ на екрані з формою */
+        #screen-form #form-img {
+            display: none;
+        }
+        
+        /* Компактизація типографіки та форми */
+        h1 { font-size: 2.2rem; }
+        h2 { font-size: 1.8rem; margin-bottom: 15px; }
+        p { font-size: 1rem; margin-bottom: 15px; }
+        ul { padding-left: 15px; }
+        li { font-size: 1rem; line-height: 1.4; margin-bottom: 10px; }
+        
+        form { gap: 10px; max-width: 100%; }
+        input, textarea { padding: 12px; font-size: 1rem; }
+        
+        /* Адаптація стрілок під тач-інтерфейс */
+        .nav-arrow { 
+            width: 45px; 
+            height: 45px; 
+            right: 10px; 
+        }
+        .nav-arrow svg { width: 25px; height: 25px; }
+        .arrow-up { top: 10px; }
+        .arrow-down { bottom: 10px; }
+    }
     </style>
     <script>
         !function(f,b,e,v,n,t,s)
